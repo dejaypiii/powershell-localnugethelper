@@ -27,7 +27,7 @@
     PS Gallery page:  https://www.powershellgallery.com/packages/LocalNugetHelper
 #>
 function Publish-LocalPackage {
-# TODO restructure script
+    # TODO restructure script
 
     [CmdletBinding()]
     param (
@@ -40,61 +40,52 @@ function Publish-LocalPackage {
         $LocalFeedPath = ${Join-Path $HOME "localnugetfeed"}
     )
 
-    if ($LocalFeedName -eq "")
-    {
+    if ($LocalFeedName -eq "") {
         Write-Error "No local feed name provided." -ErrorAction Stop
     }
 
-    if ($LocalFeedPath -eq "")
-    {
+    if ($LocalFeedPath -eq "") {
         Write-Error "No local feed path provided." -ErrorAction Stop
     }
 
     # TODO maybe save a config and update the module description
 
     Write-Verbose "Testing if the local feed path ${LocalFeedPath} exists."
-    if (-not (Test-Path -Path $LocalFeedPath))
-    {
+    if (-not (Test-Path -Path $LocalFeedPath)) {
         Write-Host "Creating local feed path ${LocalFeedPath}." -ForegroundColor Cyan
         Write-Verbose "Calling 'mkdir ${LocalFeedPath}'"
 
         New-Item -Path $LocalFeedPath -ItemType "directory" -ErrorAction Stop
     }
-    else 
-    {
+    else {
         Write-Verbose "The local feed path already exists."
     }
 
     Write-Verbose "Testing if the local feed path ${LocalFeedPath} is added as a NuGet source."
     Write-Verbose "Calling 'dotnet nuget list source --format short | Select-string -Pattern ""C:\\p\\localnugetfeed""'"
-    $sourceExists = dotnet nuget list source --format short | Select-string -Pattern "C:\\p\\localnugetfeed" # TODO transform param to regex
-    if ($null -eq $sourceExists)
-    {
+    $sourceExists = dotnet nuget list source --format short | Select-String -Pattern "C:\\p\\localnugetfeed" # TODO transform param to regex
+    if ($null -eq $sourceExists) {
         Write-Host "Adding local NuGet feed source: ${LocalFeedName} - ${LocalFeedPath}" -ForegroundColor Cyan
         Write-Verbose "Calling 'dotnet nuget add source ${LocalFeedPath} -n ${LocalFeedName}'"
         dotnet nuget add source $LocalFeedPath -n $LocalFeedName
     }
-    else
-    {
+    else {
         Write-Verbose "The NuGet source already exists."
     }
 
     Write-Verbose "Getting csproj of ${PSScriptRoot} and extract package name and version metadata."
     $csprojXml = [xml](Get-Content ./*.csproj -ErrorAction Stop)
 
-    $packageVersion = $csprojXml.Project.PropertyGroup.Version | Where-Object {$_ -ne $null}
-    $packageName = $csprojXml.Project.PropertyGroup.PackageIdentifier | Where-Object {$_ -ne $null}
-    if ($null -eq $packageName)
-    {
-        $packageName = $csprojXml.Project.PropertyGroup.AssemblyName | Where-Object {$_ -ne $null}
+    $packageVersion = $csprojXml.Project.PropertyGroup.Version | Where-Object { $_ -ne $null }
+    $packageName = $csprojXml.Project.PropertyGroup.PackageIdentifier | Where-Object { $_ -ne $null }
+    if ($null -eq $packageName) {
+        $packageName = $csprojXml.Project.PropertyGroup.AssemblyName | Where-Object { $_ -ne $null }
     }
-    if ($null -eq $packageName)
-    {
-        $packageName = Get-ChildItem *.csproj | ForEach-Object {$_.BaseName}
+    if ($null -eq $packageName) {
+        $packageName = Get-ChildItem *.csproj | ForEach-Object { $_.BaseName }
     }
 
-    if ($null -eq $packageName -or $null -eq $packageVersion)
-    {
+    if ($null -eq $packageName -or $null -eq $packageVersion) {
         Write-Verbose "Packagename: ${packageName}"
         Write-Verbose "Packageversion: ${packageVersion}"
         Write-Error "Couldn't extract package name and version." -ErrorAction Stop
@@ -103,37 +94,32 @@ function Publish-LocalPackage {
     Write-Host "Packing ${packageName} ${packageVersion} to ${LocalFeedPath}." -ForegroundColor Cyan
     Write-Verbose "Calling 'dotnet build'."
     dotnet build
-    if ($LASTEXITCODE -ne 0)
-    {
+    if ($LASTEXITCODE -ne 0) {
         Write-Error "Build failed" -ErrorAction Stop
     }
 
     Write-Verbose "Calling 'dotnet pack -o ${LocalFeedPath}' --no-build."
-    dotnet pack -o $LocalFeedPath --no-build 
-    if ($LASTEXITCODE -ne 0)
-    {
+    dotnet pack -o $LocalFeedPath --no-build
+    if ($LASTEXITCODE -ne 0) {
         Write-Error "Packing failed" -ErrorAction Stop
     }
 
     Write-Verbose "Calling 'dotnet nuget locals global-packages -l' to get the cache directory."
     $localCache = dotnet nuget locals global-packages -l
-    if ($LASTEXITCODE -ne 0)
-    {
+    if ($LASTEXITCODE -ne 0) {
         Write-Error "Couldn't determine global-package cache directory." -ErrorAction Stop
     }
 
     Write-Verbose $localCache
-    $cacheName, $cachePath = $localCache -split ": ",2
-    $cachePackagePath = Join-Path $cachePath $packageName $packageVersion
+    $cacheName, $cachePath = $localCache -split ": ", 2
+    $cachePackagePath = Join-Path -Path $cachePath $packageName $packageVersion
 
     Write-Verbose "Testing if the package version is cached in ${cachePackagePath}."
-    if (Test-Path -Path $cachePackagePath)
-    {
+    if (Test-Path -Path $cachePackagePath) {
         Write-Host "Cleaning cache ${cacheName} ${cachePackagePath}." -ForegroundColor Cyan
         Remove-Item $cachePackagePath -Recurse -Force -ErrorAction Stop
     }
-    else
-    {
+    else {
         Write-Verbose "Cache version doesn't exist."
     }
 
@@ -142,8 +128,7 @@ function Publish-LocalPackage {
     Write-Verbose "Calling 'dotnet nuget push --source ${cachePath} ${localFeedPackagePath}"
 
     dotnet nuget push --source $cachePath $localFeedPackagePath
-    if ($LASTEXITCODE -ne 0)
-    {
+    if ($LASTEXITCODE -ne 0) {
         Write-Error "Couldn't update global-package cache directory." -ErrorAction Stop
     }
 
