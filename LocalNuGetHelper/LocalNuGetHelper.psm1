@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    Packs your C# project of the current folder, publish it to your local NuGet feed and updates your global-package cache.
+    Packs your C# project of the current directory, publish it to your local NuGet feed and updates your global-package cache.
 
     .PARAMETER LocalFeedName
     The name for your local NuGet feed (default = Local NuGet feed).
@@ -12,9 +12,9 @@
     After applying changes to your .NET NuGet package using `Publish-LocalPackage` will let you consume these changes instantly in another project.
 
     Procedure:
-    1. Creates a folder for the local NuGet path under <LocalFeedPath>.
-    2. Adds the folder as a NuGet source with the name <LocalFeedName>.
-    3. Packs the C# project of the current folder and puts the output into the local NuGet source.
+    1. Creates a directory for the local NuGet path under <LocalFeedPath>.
+    2. Adds the directory as a NuGet source with the name <LocalFeedName>.
+    3. Packs the C# project of the current directory and puts the output into the local NuGet source.
     4. Purges local global-package cache of a maybe existing package version.
     5. Updates the global-package cache with the new package.
 
@@ -37,7 +37,7 @@ function Publish-LocalPackage {
 
         [Parameter()]
         [String]
-        $LocalFeedPath = ${Join-Path $HOME "localnugetfeed"}
+        $LocalFeedPath = $(Join-Path $HOME "localnugetfeed")
     )
 
     $dotnetVersion = dotnet --version
