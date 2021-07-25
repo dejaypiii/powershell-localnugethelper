@@ -24,7 +24,7 @@
     ✓ Done
 
     .LINK
-    PS Gallery page:  https://www.powershellgallery.com/packages/LocalNugetHelper
+    PS Gallery page:  https://www.powershellgallery.com/packages/LocalNuGetHelper
 #>
 function Publish-LocalPackage {
     # TODO restructure script
