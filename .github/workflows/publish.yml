@@ -32,6 +32,7 @@ jobs:
           }
 
   publish-powershell-module:
+    needs: lint-powershell-module
     runs-on: ubuntu-latest
 
     steps:
