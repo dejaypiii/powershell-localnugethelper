@@ -67,8 +67,9 @@ function Publish-LocalPackage {
     }
 
     Write-Verbose "Testing if the local feed path ${LocalFeedPath} is added as a NuGet source."
-    Write-Verbose "Calling 'dotnet nuget list source --format short | Select-string -Pattern ""C:\\p\\localnugetfeed""'"
-    $sourceExists = dotnet nuget list source --format short | Select-String -Pattern "C:\\p\\localnugetfeed" # TODO transform param to regex
+    Write-Verbose "Calling 'dotnet nuget list source --format short | Select-string -Pattern ${localFeedPathRegex}'."
+    $localFeedPathRegex = [regex]::escape($LocalFeedPath)
+    $sourceExists = dotnet nuget list source --format short | Select-String -Pattern $localFeedPathRegex
     if ($null -eq $sourceExists) {
         Write-Host "Adding local NuGet feed source: ${LocalFeedName} - ${LocalFeedPath}" -ForegroundColor Cyan
         Write-Verbose "Calling 'dotnet nuget add source ${LocalFeedPath} -n ${LocalFeedName}'"
