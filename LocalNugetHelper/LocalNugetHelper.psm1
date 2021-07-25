@@ -40,6 +40,11 @@ function Publish-LocalPackage {
         $LocalFeedPath = ${Join-Path $HOME "localnugetfeed"}
     )
 
+    $dotnetVersion = dotnet --version
+    if (($null -eq $dotnetVersion) -or ($LASTEXITCODE -ne 0)) {
+        Write-Error "No dotnet CLI available." -ErrorAction Stop
+    }
+
     if ($LocalFeedName -eq "") {
         Write-Error "No local feed name provided." -ErrorAction Stop
     }
