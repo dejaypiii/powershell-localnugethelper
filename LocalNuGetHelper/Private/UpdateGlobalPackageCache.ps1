@@ -26,6 +26,7 @@ function UpdateGlobalPackageCache {
     }
     else {
         Write-Verbose "Cache version doesn't exist."
+        return
     }
 
     Write-Host "Updating global-package cache." -ForegroundColor Cyan
