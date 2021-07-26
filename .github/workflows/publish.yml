@@ -1,48 +1,59 @@
 name: Publish PowerShell Module
 
 on:
-  workflow_dispatch:
-  release:
-    types: [created]
+    workflow_dispatch:
+    release:
+        types: [created]
 
 jobs:
-  lint-powershell-module:
-    runs-on: ubuntu-latest
+    test-powershell-module:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-      
-      - name: Install PSScriptAnalyzer
-        shell: pwsh
-        run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module PSScriptAnalyzer -ErrorAction Stop
-        
-      - name: Lint all *.ps1 and *.psm1 scripts
-        shell: pwsh
-        run: |
-          Invoke-ScriptAnalyzer -Path . -Recurse -ExcludeRule PSAvoidUsingWriteHost, PSUseBOMForUnicodeEncodedFile -Outvariable issues
-          $errors   = $issues.Where({$_.Severity -eq 'Error'})
-          $warnings = $issues.Where({$_.Severity -eq 'Warning'})
-          if ($errors -or $warnings) {
-              Write-Error "There were $($errors.Count) errors and $($warnings.Count) warnings total." -ErrorAction Stop
-          }
-          else {
-              Write-Output "Passed"
-          }
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v2
 
-  publish-powershell-module:
-    needs: lint-powershell-module
-    runs-on: ubuntu-latest
+            - name: Install PSScriptAnalyzer
+              shell: pwsh
+              run: |
+                  Set-PSRepository PSGallery -InstallationPolicy Trusted
+                  Install-Module PSScriptAnalyzer -ErrorAction Stop
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+            - name: Lint all *.ps1 and *.psm1 scripts
+              shell: pwsh
+              run: |
+                  Invoke-ScriptAnalyzer -Path . -Recurse -ExcludeRule PSAvoidUsingWriteHost, PSUseBOMForUnicodeEncodedFile -Outvariable issues
+                  $errors   = $issues.Where({$_.Severity -eq 'Error'})
+                  $warnings = $issues.Where({$_.Severity -eq 'Warning'})
+                  if ($errors -or $warnings) {
+                      Write-Error "There were $($errors.Count) errors and $($warnings.Count) warnings total." -ErrorAction Stop
+                  }
+                  else {
+                      Write-Output "Passed"
+                  }
 
-      - name: Build and publish
-        env:
-          NUGET_KEY: ${{ secrets.NUGET_KEY }}
-        shell: pwsh
-        run: |
-          Publish-Module -Path ./LocalNuGetHelper -NuGetApiKey $env:NUGET_KEY -Verbose
+            - name: Execute Publish-LocalPackage with default params
+              shell: pwsh
+              run: |
+                  Import-Module ./LocalNuGetHelper/LocalNuGetHelper.psm1
+                  cd ./TestPackageProject
+                  Publish-LocalPackage -Verbose
+
+            - name: Test if the package got pushed to the local NuGet feed
+              shell: pwsh
+              run: Test-Path ~/localnugetfeed/TestPackageProject.1.0.0.nupkg | Should -Be $true
+
+    publish-powershell-module:
+        needs: test-powershell-module
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v2
+
+            - name: Build and publish
+              env:
+                  NUGET_KEY: ${{ secrets.NUGET_KEY }}
+              shell: pwsh
+              run: |
+                  Publish-Module -Path ./LocalNuGetHelper -NuGetApiKey $env:NUGET_KEY -Verbose
