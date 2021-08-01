@@ -1,4 +1,4 @@
-﻿Describe "Publish-LocalPackage smoke test" {
+Describe "Publish-LocalPackage smoke test" {
     BeforeAll {
         if (Test-Path ~/localnugetfeed/TestPackageProject.1.0.0.nupkg) {
             Remove-Item ~/localnugetfeed/TestPackageProject.1.0.0.nupkg -Recurse -Force -ErrorAction Stop

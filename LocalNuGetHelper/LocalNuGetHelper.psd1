@@ -30,7 +30,6 @@ CompanyName = 'Otter'
 Copyright = '(c) 2021 Johann-Peter Duchon. Alle Rechte vorbehalten.'
 
 # Beschreibung der von diesem Modul bereitgestellten Funktionen
-# TODO change to short description
 Description = 'Supports you with a seamless development workflow for your .NET NuGet packages.'
 
 # Die für dieses Modul mindestens erforderliche Version des Windows PowerShell-Moduls

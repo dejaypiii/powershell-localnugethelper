@@ -2,6 +2,7 @@
 . $PSScriptRoot/../Private/ExtractCsprojMetaData.ps1
 . $PSScriptRoot/../Private/CreatePackageToLocalFeed.ps1
 . $PSScriptRoot/../Private/UpdateGlobalPackageCache.ps1
+. $PSScriptRoot/../Private/RunPublishOnChanges.ps1
 
 <#
     .SYNOPSIS
@@ -12,6 +13,9 @@
 
     .PARAMETER LocalFeedPath
     The path to your local NuGet directory (default = $HOME/localnugetfeed).
+
+    .PARAMETER Watch
+    Publish your package continuously on each change.
 
     .DESCRIPTION
     After applying changes to your .NET NuGet package using `Publish-LocalPackage` will let you consume these changes instantly in another project.
@@ -43,7 +47,11 @@ function Publish-LocalPackage {
 
         [Parameter()]
         [String]
-        $LocalFeedPath = $(Join-Path $HOME "localnugetfeed")
+        $LocalFeedPath = $(Join-Path $HOME "localnugetfeed"),
+
+        [Parameter()]
+        [switch]
+        $watch = $false
     )
 
     $dotnetVersion = dotnet --version
@@ -68,6 +76,10 @@ function Publish-LocalPackage {
     CreatePackageToLocalFeed
 
     UpdateGlobalPackageCache $packageName $packageVersion
+
+    if ($watch) {
+        RunPublishOnChanges
+    }
 
     Write-Host "✓ Done" -ForegroundColor Green
     return
