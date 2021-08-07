@@ -1,4 +1,4 @@
-# LocalNuGetHelper
+# LocalNuGetHelper [![Test Powershell Module](https://github.com/dejaypiii/powershell-localnugethelper/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/dejaypiii/powershell-localnugethelper/actions/workflows/test.yml)
 
 LocalNuGetHelper is a powershell module that supports you with a seamless development workflow for your .NET NuGet packages.
 
