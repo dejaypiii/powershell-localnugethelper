@@ -8,13 +8,14 @@ function RunPublishOnChanges {
     $watcher.IncludeSubdirectories = $true
     $watcher.EnableRaisingEvents = $true
 
-    $binFolder = Join-Path "bin" ""
+    $splitProjectPath = Split-Path $PackageProjectPath -Leaf
+    $binFolder = Join-Path $splitProjectPath "bin" ""
     $binFolderRegex = [regex]::escape($binFolder)
-    $objFolder = Join-Path "obj" ""
+    $objFolder = Join-Path $splitProjectPath "obj" ""
     $objFolderRegex = [regex]::escape($objFolder)
-    $excludeFilterRegex = "^$binFolderRegex*|^$objFolderRegex*"
+    $excludeFilterRegex = "$binFolderRegex*|$objFolderRegex*"
     Write-Verbose "Exclude filter: $excludeFilterRegex"
-
+Pause
     $action = {
         . $PSScriptRoot/../Private/ExtractCsprojMetaData.ps1
         . $PSScriptRoot/../Private/CreatePackageToLocalFeed.ps1
@@ -24,6 +25,7 @@ function RunPublishOnChanges {
         $name = $details.Name
         $timestamp = $event.TimeGenerated
 
+        $packageProjectPath = $event.MessageData.PackageProjectPath
         $localFeedPath = $event.MessageData.LocalFeedPath
         $verbosePreferenceBackup = $VerbosePreference
         $VerbosePreference = $event.MessageData.VerboseSetting
@@ -47,12 +49,14 @@ function RunPublishOnChanges {
         }
         finally {
             $VerbosePreference = $verbosePreferenceBackup
+            Clear-Variable $packageProjectPath
             Clear-Variable $localFeedPath
         }
     }
 
     Write-Verbose "Register event handler."
     $eventData = New-Object psobject -Property @{
+        PackageProjectPath = $PackageProjectPath;
         LocalFeedName      = $localFeedName;
         LocalFeedPath      = $localFeedPath;
         ExcludeFilterRegex = $excludeFilterRegex;
