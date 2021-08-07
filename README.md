@@ -23,34 +23,55 @@ After applying changes to your .NET NuGet package using `Publish-LocalPackage` w
 
 1. Creates a directory for the local NuGet path under \<LocalFeedPath>.
 2. Adds the directory as a NuGet source with the name \<LocalFeedName>.
-3. Packs the C# project of the current directory and puts the output into the local NuGet source.
+3. Packs the C# project of the \<PackageProjectPath> directory and puts the output into the local NuGet source.
 4. Purges local global-package cache of a maybe existing package version.
 5. Updates the global-package cache with the new package.
 
 ### Usage
 
-The package project directory must be the current directory.
-
-#### With custom params
+#### With custom arguments
 
 Windows
 
 ``` pwsh
-Pubish-LocalPackage -LocalFeedName "My feed name" -LocalFeedPath C:\mydir
+Pubish-LocalPackage -PackageProjectPath .\MyPackageProject -LocalFeedName "My feed name" -LocalFeedPath C:\mydir
 ```
 
 Posix
 
 ``` pwsh
-Pubish-LocalPackage -LocalFeedName "My feed name" -LocalFeedPath /home/myuser/mydir
+Pubish-LocalPackage -PackageProjectPath ./MyPackageProject -LocalFeedName "My feed name" -LocalFeedPath /home/myuser/mydir
 ```
 
-#### With default params
+#### With default arguments
 
-The default parameters will be "Local NuGet feed" as your feed name and "localnugetfeed" as a directory in your home/userprofile directory.
+It will publish the package project from your current location.
+The remaining default parameters will be "Local NuGet feed" as your feed name and "localnugetfeed" as a directory in your home/userprofile directory.
+
 
 ``` pwsh
 Publish-LocalPackage
+```
+
+#### With Watch mode
+
+Adding the `Watch` argument will publish your package continuously on each detected change.
+
+``` pwsh
+Publish-LocalPackage -Watch
+```
+
+``` pwsh
+Publish-LocalPackage -PackageProjectPath ./MyPackageProject -Watch
+```
+
+#### Troubleshooting
+
+If you have any problems executing `Publish-LocalPackage` adding the `Verbose` argument will help you to understand what is going on.
+Running in the verbose mode will lead to a lot more and detailed shell output.
+
+``` pwsh
+Publish-LocalPackage -Verbose
 ```
 
 ### Output result example
@@ -76,11 +97,6 @@ Pack package to an output directory    | `dotnet pack <projectPath> -o <localFee
 Get global package cache directory     | `dotnet nuget locals global-packages -l`
 Delete cached package version          | `Remove-Item <globalPackageCachePath>/<packageName>/<version> -Recurse -Force -ErrorAction Stop`
 Update package cache                   | `dotnet nuget push --source <globalPackageCachePath> <packageFromLocalFeed>`
-
-## Roadmap
-
-- Watch parameter to continuously publish package locally on change
-- Configuration file to persist local feed name and directory path
 
 ## License
 

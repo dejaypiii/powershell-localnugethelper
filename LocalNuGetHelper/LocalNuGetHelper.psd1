@@ -12,7 +12,7 @@
 RootModule = 'LocalNuGetHelper.psm1'
 
 # Die Versionsnummer dieses Moduls
-ModuleVersion = '0.2.0'
+ModuleVersion = '0.3.0'
 
 # Unterstützte PSEditions
 # CompatiblePSEditions = @()
@@ -107,16 +107,11 @@ PrivateData = @{
         # IconUri = ''
 
         # 'ReleaseNotes' des Moduls
-        ReleaseNotes = '### Added
+        ReleaseNotes = '###  Added
 
-        - README documentation
-        - Requirements check of an available dotnet CLI
-        - Detailed verbose log outputs
-
-        ### Changed
-
-        - Replace hard coded values with function parameters for feed name and directory
-        - Tidy up log outputs and seperate them with colors'
+        -   Automated integration test ("smoke test")
+        -   `PacakgeProjectPath` parameter that will publish a package from a different directory than the current location
+        -   `Watch` parameter that will publish a package continuously on each change'
 
     } # Ende der PSData-Hashtabelle
 
