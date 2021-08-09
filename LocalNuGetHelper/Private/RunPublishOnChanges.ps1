@@ -8,13 +8,7 @@ function RunPublishOnChanges {
     $watcher.IncludeSubdirectories = $true
     $watcher.EnableRaisingEvents = $true
 
-    $splitProjectPath = Split-Path $PackageProjectPath -Leaf
-    $binFolder = Join-Path $splitProjectPath "bin" ""
-    $binFolderRegex = [regex]::escape($binFolder)
-    $objFolder = Join-Path $splitProjectPath "obj" ""
-    $objFolderRegex = [regex]::escape($objFolder)
-    $excludeFilterRegex = "$binFolderRegex*|$objFolderRegex*"
-    Write-Verbose "Exclude filter: $excludeFilterRegex"
+    $excludeFilterRegex = GetExcludeFilterRegex
 
     $action = {
         . $PSScriptRoot/../Private/ExtractCsprojMetaData.ps1
@@ -31,7 +25,6 @@ function RunPublishOnChanges {
         $VerbosePreference = $event.MessageData.VerboseSetting
 
         if ($name -match $event.MessageData.ExcludeFilterRegex) {
-            Write-Host ""
             Write-Verbose "Ignoring change of $name."
             return
         }
@@ -99,5 +92,33 @@ function RunPublishOnChanges {
         Write-Verbose "Dispose file system watcher."
         $watcher.EnableRaisingEvents = $false
         $watcher.Dispose()
+    }
+}
+
+function GetExcludeFilterRegex {
+    $binFolder = Join-Path "bin" ""
+    $objFolder = Join-Path "obj" ""
+    $splitProjectPath = GetSplitProjectPath
+
+    if ($splitProjectPath -ne "") {
+        $binFolder = Join-Path $splitProjectPath $binFolder
+        $objFolder = Join-Path $splitProjectPath $objFolder
+    }
+
+    $binFolderRegex = [regex]::escape($binFolder)
+    $objFolderRegex = [regex]::escape($objFolder)
+    $excludeFilterRegex = "$binFolderRegex*|$objFolderRegex*"
+    Write-Verbose "Exclude filter: $excludeFilterRegex"
+    return $excludeFilterRegex
+}
+
+function GetSplitProjectPath {
+    $packageProjectPathLeaf = Split-Path $PackageProjectPath -Leaf
+    $currentLocationLeaf = Split-Path $(Get-Location) -Leaf
+    if ($packageProjectPathLeaf -eq $currentLocationLeaf) {
+        return ""
+    }
+    else {
+        return $packageProjectPathLeaf
     }
 }

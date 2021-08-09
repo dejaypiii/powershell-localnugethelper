@@ -12,7 +12,7 @@
 RootModule = 'LocalNuGetHelper.psm1'
 
 # Die Versionsnummer dieses Moduls
-ModuleVersion = '0.3.1'
+ModuleVersion = '0.3.2'
 
 # Unterstützte PSEditions
 # CompatiblePSEditions = @()
@@ -109,7 +109,8 @@ PrivateData = @{
         # 'ReleaseNotes' des Moduls
         ReleaseNotes = '### Fixed
 
-        -   Pausing on each watch cycle'
+        -   Wrong csproj directory path in verbose message
+        -   Exclude filter of watch mode if the current location and the package project path are the same'
 
     } # Ende der PSData-Hashtabelle
 
