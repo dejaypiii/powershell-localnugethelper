@@ -9,12 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 \-
 
+## [0.3.1] - 2021-08-09
+
+### Fixed
+
+-   Pausing on each watch cycle
+
 ## [0.3.0] - 2021-08-07
 
 ###  Added
 
 -   Automated integration test ("smoke test")
--   `PacakgeProjectPath` parameter that will publish a package from a different directory than the current location
+-   `PackageProjectPath` parameter that will publish a package from a different directory than the current location
 -   `Watch` parameter that will publish a package continuously on each change
 
 ## [0.2.0] - 2021-07-25

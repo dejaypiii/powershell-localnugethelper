@@ -15,7 +15,7 @@ function RunPublishOnChanges {
     $objFolderRegex = [regex]::escape($objFolder)
     $excludeFilterRegex = "$binFolderRegex*|$objFolderRegex*"
     Write-Verbose "Exclude filter: $excludeFilterRegex"
-Pause
+
     $action = {
         . $PSScriptRoot/../Private/ExtractCsprojMetaData.ps1
         . $PSScriptRoot/../Private/CreatePackageToLocalFeed.ps1
