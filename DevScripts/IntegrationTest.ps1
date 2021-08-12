@@ -1,1 +1,1 @@
-Invoke-Pester ./Tests/SmokeTest.IntegrationTest.ps1
+﻿Invoke-Pester ./Tests/SmokeTest.IntegrationTest.ps1

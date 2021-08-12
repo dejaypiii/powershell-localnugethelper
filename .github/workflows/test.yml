@@ -19,7 +19,7 @@ jobs:
             - name: Lint all *.ps1 and *.psm1 scripts
               shell: pwsh
               run: |
-                  Invoke-ScriptAnalyzer -Path . -Recurse -ExcludeRule PSAvoidUsingWriteHost, PSUseBOMForUnicodeEncodedFile -Outvariable issues
+                  Invoke-ScriptAnalyzer -Path . -Recurse -ExcludeRule PSAvoidUsingWriteHost -Outvariable issues
                   $errors   = $issues.Where({$_.Severity -eq 'Error'})
                   $warnings = $issues.Where({$_.Severity -eq 'Warning'})
                   if ($errors -or $warnings) {

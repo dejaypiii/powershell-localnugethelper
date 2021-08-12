@@ -1,4 +1,4 @@
-function CreatePackageToLocalFeed {
+﻿function CreatePackageToLocalFeed {
     Write-Host "Packing ${packageName} ${packageVersion} to ${LocalFeedPath}." -ForegroundColor Cyan
     Write-Verbose "Calling 'dotnet build'."
     dotnet build $PackageProjectPath

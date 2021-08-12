@@ -1,4 +1,4 @@
-function PrepareLocalEnvironment {
+﻿function PrepareLocalEnvironment {
     Write-Verbose "Testing if the local feed path ${LocalFeedPath} exists."
     if (-not (Test-Path -Path $LocalFeedPath)) {
         Write-Host "Creating local feed path ${LocalFeedPath}." -ForegroundColor Cyan

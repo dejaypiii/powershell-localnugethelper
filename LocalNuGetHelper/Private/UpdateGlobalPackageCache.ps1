@@ -1,4 +1,4 @@
-function UpdateGlobalPackageCache {
+﻿function UpdateGlobalPackageCache {
     param (
         [Parameter(Mandatory)]
         [String]

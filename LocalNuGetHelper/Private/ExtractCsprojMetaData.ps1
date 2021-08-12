@@ -1,4 +1,4 @@
-function ExtractCsprojMetaData {
+﻿function ExtractCsprojMetaData {
     Write-Verbose "Getting csproj of $PackageProjectPath and extract package name and version metadata."
     $csprojPath = Join-Path $PackageProjectPath "*.csproj"
     $csprojXml = [xml](Get-Content $csprojPath -ErrorAction Stop)

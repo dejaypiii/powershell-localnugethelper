@@ -1,4 +1,4 @@
-function RunPublishOnChanges {
+﻿function RunPublishOnChanges {
     $currentLocation = Get-Location
     Write-Verbose "Initialize file system watcher for $currentLocation."
     $watcher = New-Object System.IO.FileSystemWatcher

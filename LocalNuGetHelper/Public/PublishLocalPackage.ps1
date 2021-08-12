@@ -1,4 +1,4 @@
-. $PSScriptRoot/../Private/PrepareLocalEnvironment.ps1
+﻿. $PSScriptRoot/../Private/PrepareLocalEnvironment.ps1
 . $PSScriptRoot/../Private/ExtractCsprojMetaData.ps1
 . $PSScriptRoot/../Private/CreatePackageToLocalFeed.ps1
 . $PSScriptRoot/../Private/UpdateGlobalPackageCache.ps1
