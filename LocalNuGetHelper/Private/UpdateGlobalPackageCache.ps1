@@ -17,7 +17,7 @@
 
     Write-Verbose $localCache
     $cacheName, $cachePath = $localCache -split ": ", 2
-    $cachePackagePath = Join-Path -Path $cachePath $packageName $packageVersion
+    $cachePackagePath = Join-Path -Path $cachePath -ChildPath $packageName | Join-Path -ChildPath $packageVersion
 
     Write-Verbose "Testing if the package version is cached in ${cachePackagePath}."
     if (Test-Path -Path $cachePackagePath) {

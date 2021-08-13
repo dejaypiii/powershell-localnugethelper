@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 \-
 
+-   Compatibility issue with Windows Powershell 5.x (Join-Path only supports 2 arguments)
 ## [0.3.3] - 2021-08-12
 
 ### Fixed
