@@ -3,7 +3,7 @@
     Write-Verbose "Initialize file system watcher for $currentLocation."
     $watcher = New-Object System.IO.FileSystemWatcher
     $watcher.Path = $currentLocation
-    $watcher.Filter = "*.*"
+    $watcher.Filter = "*.cs"
     $watcher.NotifyFilter = [IO.NotifyFilters]::FileName, [IO.NotifyFilters]::LastWrite
     $watcher.IncludeSubdirectories = $true
     $watcher.EnableRaisingEvents = $true

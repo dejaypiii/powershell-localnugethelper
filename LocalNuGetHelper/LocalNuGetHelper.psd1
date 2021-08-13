@@ -12,7 +12,7 @@
 RootModule = 'LocalNuGetHelper.psm1'
 
 # Die Versionsnummer dieses Moduls
-ModuleVersion = '0.3.3'
+ModuleVersion = '0.3.4'
 
 # Unterstützte PSEditions
 # CompatiblePSEditions = @()
@@ -109,7 +109,8 @@ PrivateData = @{
         # 'ReleaseNotes' des Moduls
         ReleaseNotes = '### Fixed
 
-        -   Compatibility issue with Windows Powershell 5.x (encoding changed to utf8bom)'
+        -   Compatibility issue with Windows Powershell 5.x (Join-Path only supports 2 arguments)
+        -   Multiple watch action iterations because of changes in several temp/cache files (only watch for *.cs)'
 
     } # Ende der PSData-Hashtabelle
 

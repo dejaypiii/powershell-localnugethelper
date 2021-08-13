@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 \-
 
+## [0.3.4] - 2021-08-13
+
+### Fixed
+
 -   Compatibility issue with Windows Powershell 5.x (Join-Path only supports 2 arguments)
+-   Multiple watch action iterations because of changes in several temp/cache files (only watch for *.cs)
+
 ## [0.3.3] - 2021-08-12
 
 ### Fixed
