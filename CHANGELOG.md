@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 \-
 
+## [1.0.0] - 2021-10-25
+
+### Removed
+
+-   Watch feature
+
 ## [0.3.4] - 2021-08-13
 
 ### Fixed

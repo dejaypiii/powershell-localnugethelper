@@ -53,18 +53,6 @@ The remaining default parameters will be "Local NuGet feed" as your feed name an
 Publish-LocalPackage
 ```
 
-#### With Watch mode
-
-Adding the `Watch` argument will publish your package continuously on each detected change.
-
-``` pwsh
-Publish-LocalPackage -Watch
-```
-
-``` pwsh
-Publish-LocalPackage -PackageProjectPath ./MyPackageProject -Watch
-```
-
 #### Troubleshooting
 
 If you have any problems executing `Publish-LocalPackage` adding the `Verbose` argument will help you to understand what is going on.
