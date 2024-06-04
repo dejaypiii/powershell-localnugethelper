@@ -109,7 +109,7 @@ PrivateData = @{
         # 'ReleaseNotes' des Moduls
         ReleaseNotes = '### Fixed
 
--   Fixed breaking change of .NET 8: dotnet pack now uses "-c Debug" explicitly
+-   Fixed breaking change of .NET 8: dotnet pack now uses "-c Debug" explicitly'
 
     } # Ende der PSData-Hashtabelle
 
