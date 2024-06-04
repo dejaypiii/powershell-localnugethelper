@@ -12,7 +12,7 @@
 RootModule = 'LocalNuGetHelper.psm1'
 
 # Die Versionsnummer dieses Moduls
-ModuleVersion = '1.0.0'
+ModuleVersion = '1.0.1'
 
 # Unterstützte PSEditions
 # CompatiblePSEditions = @()
@@ -107,9 +107,9 @@ PrivateData = @{
         # IconUri = ''
 
         # 'ReleaseNotes' des Moduls
-        ReleaseNotes = '### Removed
+        ReleaseNotes = '### Fixed
 
-        -   Watch feature'
+-   Fixed breaking change of .NET 8: dotnet pack now uses "-c Debug" explicitly
 
     } # Ende der PSData-Hashtabelle
 
