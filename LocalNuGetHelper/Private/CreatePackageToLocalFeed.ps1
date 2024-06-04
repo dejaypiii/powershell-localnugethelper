@@ -7,7 +7,7 @@
     }
 
     Write-Verbose "Calling 'dotnet pack -o ${LocalFeedPath}' --no-build."
-    dotnet pack $PackageProjectPath -o $LocalFeedPath --no-build
+    dotnet pack $PackageProjectPath -o $LocalFeedPath --no-build -c Debug
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Packing failed" -ErrorAction Stop
     }
